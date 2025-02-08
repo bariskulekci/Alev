@@ -25,7 +25,7 @@ export default function App() {
   let torchStyle = {
     position: "absolute",
     left: cursorPosition.x - 10,
-    top: cursorPosition.y - 60,
+    top: cursorPosition.y - 60
   };
   /*----------------------------------------------------------------- */
 
@@ -46,48 +46,33 @@ export default function App() {
           - woodKindling true ise
           - Kullanıcının imleci "wood-container" div'inden ayrıldı (satır 60) 
   */
+          const handleMouseEnterWood = () => {
+            if (torchEquipped) {
+              setWoodKindling(true);
+            }
+          };
 
-  const handleMouseDown = (e) => {
-    if (e.target.closest(".torch-container")) {
-      setTorchEquipped(true);
-    }
-  };
-
-  const handleMouseUp = () => {
-    if (document.querySelector(".wrapper").contains(event.target)) {
-      setTorchEquipped(false);
-    }
-  };
-  const handleWoodMouseEnter = () => {
-    if (torchEquipped) {
-      setWoodKindling(true);
-    }
-  };
-  const handleWoodMouseLeave = () => {
-    if (torchEquipped && woodKindling) {
-      setWoodOnFire(true);
-    }
-  };
+          const handleMouseLeaveWood = () => {
+            if (torchEquipped && woodKindling) {
+              setWoodOnFire(true);
+            }
+          };
 
   return (
     <div className={`wrapper ${torchEquipped && "relative no-cursor"}`}>
-      <div
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        className={`game-area ${!torchEquipped && "relative"}`}
-      >
+      <div className={`game-area ${!torchEquipped && "relative"}`}>
         <div
           className={`torch-container ${torchEquipped && "torch-equipped"}`}
           style={torchEquipped ? torchStyle : null}
+          onMouseDown={()=> setTorchEquipped(true)}
+          onMouseUp={()=>setTorchEquipped(false)}
         >
           <Torch />
         </div>
 
-        <div
-          onMouseEnter={handleWoodMouseEnter}
-          onMouseLeave={handleWoodMouseLeave}
-          className={`wood-container ${kindleClass}`}
-        >
+        <div className={`wood-container ${kindleClass}`}  
+        onMouseEnter={handleMouseEnterWood}
+          onMouseLeave={handleMouseLeaveWood} >
           🪵
           <Fire woodOnFire={woodOnFire} />
         </div>
